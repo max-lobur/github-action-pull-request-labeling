@@ -24,8 +24,8 @@ CHECK_SUITES_NAMES=$(echo $CHECK_SUITES_INFO | jq .check_suites[].id)
 CHECK_SUITES_ARRAY=( $CHECK_SUITES_NAMES )
 # For each check suite, get the number of runs in that check suite
 for check_suite in "${CHECK_SUITES_ARRAY[@]}"; do
-  while :
-  do
+  ##while :
+  ##do
     CHECK_SUITE_INFO=$(curl -s \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: token ${GITHUB_TOKEN}" \
@@ -46,15 +46,15 @@ for check_suite in "${CHECK_SUITES_ARRAY[@]}"; do
         if [[ "$?" -eq "0" ]]; then
           echo "${INPUTS_CHECK_NAME} check found."
           # Unfortunately, we need to wait until the check is finished.
-          echo "  Waiting for check to complete."
-          CURRENT_STATUS=$(echo $CHECK_SUITE_INFO | jq .check_runs[${run_index}].status)
-          echo "  current_status: $CURRENT_STATUS"
-          if [[ ${CURRENT_STATUS:1:-1} != "completed" ]]; then # account for quotation marks in the current_status field
-            echo "    restarting PR check status checks"
-            sleep 10
-            continue 2
-          fi
-          echo "  Check completed."
+          ##echo "  Waiting for check to complete."
+          ##CURRENT_STATUS=$(echo $CHECK_SUITE_INFO | jq .check_runs[${run_index}].status)
+          ##echo "  current_status: $CURRENT_STATUS"
+          ##if [[ ${CURRENT_STATUS:1:-1} != "completed" ]]; then # account for quotation marks in the current_status field
+          ##  echo "    restarting PR check status checks"
+          ##  sleep 10
+          ##  continue 2
+          ##fi
+          ##echo "  Check completed."
           # Now that we're sure the check is complete, let's compute LABEL_NEEDED.
           LABEL_NEEDED=1
           echo "  Description check"
@@ -64,7 +64,8 @@ for check_suite in "${CHECK_SUITES_ARRAY[@]}"; do
           if [[ "$phrase_found_yn" -ne "0" ]]; then
             echo "    ${INPUTS_CHECK_NAME} check found without appropriate description - exiting!"
             LABEL_NEEDED=0
-            break 3
+            ##break 3
+            break 2
           else
             echo "    Desired description found."
           fi
@@ -73,8 +74,8 @@ for check_suite in "${CHECK_SUITES_ARRAY[@]}"; do
         fi
       done
     fi
-    break
-  done
+    ##break
+  ##done
 done
 
 # Now that we've determined the desired value of LABEL_NEEDED, let's export it for use in labeling the pull request.
