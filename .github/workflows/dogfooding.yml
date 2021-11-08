@@ -1,6 +1,7 @@
 name: dogfooding
 on:
-  status
+  status:
+  workflow_dispatch:
 jobs:
   dogfood:
     name: dogfooding
