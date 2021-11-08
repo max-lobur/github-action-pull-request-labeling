@@ -1,5 +1,7 @@
 name: dogfooding
 on:
+  check_suite:
+    types: [completed]
   status:
   workflow_dispatch:
 jobs:
