@@ -1,0 +1,16 @@
+name: dogfooding
+on:
+  - status
+jobs:
+  dogfood:
+    name: dogfooding
+    runs-on: ubuntu-latest
+    steps:
+      - name: status-check-summaries
+        uses: cloudposse/github-action-status-check-labeling@master
+        with:
+          label: "no-plan-changes"
+          name-contains: "spacelift"
+          description-contains: "Plan contains no changes"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
